@@ -16,7 +16,10 @@
     "@distube/ytdl-core": "^4.16.12",
     "axios": "^1.17.0",
     "dotenv": "^17.4.2",
+<<<<<<< HEAD
     "express": "^5.2.1",
+=======
+>>>>>>> 36a694a764263268d74281d04813756e1bd5224f
     "node-telegram-bot-api": "^0.67.0"
   }
 }

@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # Logs
 logs
 *.log
@@ -146,3 +147,7 @@ vite.config.ts.timestamp-*
 .env
 node_modules/
 >>>>>>> 36a694a (komit pertama)
+=======
+.env
+node_modules/
+>>>>>>> 36a694a764263268d74281d04813756e1bd5224f

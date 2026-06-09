@@ -2,6 +2,7 @@ require('dotenv').config();
 const TelegramBot = require('node-telegram-bot-api');
 const axios = require('axios');
 const { downloadTikTok } = require('./downloader');
+<<<<<<< HEAD
 // Di bot.js untuk production
 const bot = new TelegramBot(process.env.BOT_TOKEN);
 bot.setWebHook(`${process.env.APP_URL}/bot${process.env.BOT_TOKEN}`);
@@ -10,6 +11,12 @@ bot.setWebHook(`${process.env.APP_URL}/bot${process.env.BOT_TOKEN}`);
 // const bot = new TelegramBot(process.env.BOT_TOKEN, {
 //   polling: true   // ganti 'webhook' saat production
 // });
+=======
+
+const bot = new TelegramBot(process.env.BOT_TOKEN, {
+  polling: true   // ganti 'webhook' saat production
+});
+>>>>>>> 36a694a764263268d74281d04813756e1bd5224f
 
 // Command /start
 bot.onText(/\/start/, (msg) => {
