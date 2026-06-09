@@ -19,7 +19,7 @@ bot.onText(/\/start/, (msg) => {
 });
 
 // Tangkap URL TikTok
-bot.onText(/https?:\/\/(www\.)?(tiktok\.com|vm\.tiktok\.com)\S+/,
+bot.onText(/https?:\/\/([a-zA-Z0-9-]+\.)?tiktok\.com\S+/,
 async (msg, match) => {
   const chatId = msg.chat.id;
   const url = match[0];
