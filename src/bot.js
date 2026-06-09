@@ -30,7 +30,7 @@ async (msg, match) => {
   console.log(url)
   try {
     const video = await downloadTikTok(url);
-  console.log(video)
+  console.log(video.videoUrl)
 
     const fileOptions = {
         // Explicitly specify the file name.
@@ -45,7 +45,7 @@ async (msg, match) => {
 
     // bot.deleteMessage(chatId, status.message_id);
   } catch (err) {
-    console.error(err);
+    // console.error(err);
     console.error(err.message);
 
     if (err.response) {

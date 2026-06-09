@@ -19,7 +19,8 @@ async function downloadTikTok(url) {
 
     return {
       title: data.title || 'TikTok Video',
-      videoUrl: data.hdplay || data.play,  // HD dulu, fallback SD
+    //   videoUrl: data.hdplay || data.play,  // HD dulu, fallback SD
+      videoUrl: data.play,  // HD dulu, fallback SD
       author: data.author?.nickname || 'Unknown',
       likes: data.digg_count,
     };
