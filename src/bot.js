@@ -27,28 +27,37 @@ async (msg, match) => {
   const status = await bot.sendMessage(chatId,
     '⏳ Memproses video, mohon tunggu...'
   );
-
+  console.log(url)
   try {
     const video = await downloadTikTok(url);
+  console.log(video)
 
     const fileOptions = {
         // Explicitly specify the file name.
-        filename: video.videoUrl,
+        filename: 'video.mp4',
         // Explicitly specify the MIME type.
         contentType: 'video/mp4'
     };
     await bot.sendVideo(chatId, video.videoUrl, {
       caption: `🎬 *${video.title}*\n👤 ${video.author}\n❤️ ${video.likes?.toLocaleString()} likes`,
-      parse_mode: 'Markdown',
       supports_streaming: true
     }, fileOptions);
 
-    bot.deleteMessage(chatId, status.message_id);
+    // bot.deleteMessage(chatId, status.message_id);
   } catch (err) {
-    console.log(err.response?.data);
+    console.error(err);
+    console.error(err.message);
+
+    if (err.response) {
+        console.error(err.response.data);
+    }
+
     bot.editMessageText(
-      '❌ Gagal download. Pastikan link valid dan coba lagi.',
-      { chat_id: chatId, message_id: status.message_id }
+        '❌ Gagal download. Pastikan link valid dan coba lagi.',
+        {
+        chat_id: chatId,
+        message_id: status.message_id
+        }
     );
-  }
+}
 });
