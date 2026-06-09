@@ -1,5 +1,4 @@
 require('./src/bot');
-<<<<<<< HEAD
 
 // Tambahkan express untuk handle webhook
 const express = require('express');
@@ -11,6 +10,3 @@ app.post(`/bot${process.env.BOT_TOKEN}`, (req, res) => {
   console.log('🤖 Bot TikTok Downloader aktif!');
 });
 app.listen(process.env.PORT || 3000);
-=======
-console.log('🤖 Bot TikTok Downloader aktif!');
->>>>>>> 36a694a764263268d74281d04813756e1bd5224f
