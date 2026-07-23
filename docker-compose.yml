@@ -1,0 +1,15 @@
+version: "3.9"
+
+services:
+  bot:
+    build: .
+    container_name: tele-tiktok-bot
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+    mem_limit: 512m
+    mem_reservation: 256m
+    cpus: 1.0
+    oom_kill_disable: false
