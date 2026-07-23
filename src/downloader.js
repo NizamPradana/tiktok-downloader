@@ -17,10 +17,12 @@ async function downloadTikTok(url) {
     const data = res.data?.data;
     if (!data) throw new Error('Gagal mengambil data');
 
+    const isImage = data.images && data.images.length > 0;
     return {
-      title: data.title || 'TikTok Video',
-    //   videoUrl: data.hdplay || data.play,  // HD dulu, fallback SD
-      videoUrl: data.play,  // HD dulu, fallback SD
+      type: isImage ? 'image' : 'video',
+      title: data.title || (isImage ? 'TikTok Foto' : 'TikTok Video'),
+      videoUrl: isImage ? null : data.play,
+      images: isImage ? data.images : null,
       author: data.author?.nickname || 'Unknown',
       likes: data.digg_count,
     };

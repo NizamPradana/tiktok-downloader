@@ -5,52 +5,50 @@ const { downloadTikTok } = require('./downloader');
 
 
 const bot = new TelegramBot(process.env.BOT_TOKEN, {
-  polling: true   // ganti 'webhook' saat production
+  polling: true
 });
 
-// Command /start
 bot.onText(/\/start/, (msg) => {
   bot.sendMessage(msg.chat.id,
     '👋 Halo! Kirimkan link TikTok dan saya akan\n' +
-    'mendownloadnya *tanpa watermark* untuk kamu! 🎬\n\n' +
+    'mendownload *video* 🎬 maupun *foto* 🖼️ tanpa watermark!\n\n' +
     'Contoh: https://www.tiktok.com/@user/video/...',
     { parse_mode: 'Markdown' }
   );
 });
 
-// Tangkap URL TikTok
 bot.onText(/https?:\/\/(www\.)?(tiktok\.com|vm\.tiktok\.com|vt\.tiktok\.com)\S+/,
 async (msg, match) => {
   const chatId = msg.chat.id;
   const url = match[0];
 
   const status = await bot.sendMessage(chatId,
-    '⏳ Memproses video, mohon tunggu...'
+    '⏳ Memproses, mohon tunggu...'
   );
-  console.log(url)
+
   try {
-    const video = await downloadTikTok(url);
-  console.log(video.videoUrl)
+    const result = await downloadTikTok(url);
+    await bot.deleteMessage(chatId, status.message_id).catch(() => {});
 
-    const fileOptions = {
-        // Explicitly specify the file name.
-        filename: 'video.mp4',
-        // Explicitly specify the MIME type.
-        contentType: 'video/mp4'
-    };
-    await bot.sendVideo(chatId, video.videoUrl, {
-      caption: `🎬 *${video.title}*\n👤 ${video.author}\n❤️ ${video.likes?.toLocaleString()} likes`,
-      supports_streaming: true
-    }, fileOptions);
+    const caption = `🖼️ *${result.title}*\n👤 ${result.author}\n❤️ ${result.likes?.toLocaleString()} likes`;
 
-    // bot.deleteMessage(chatId, status.message_id);
-  } catch (err) {
-    // console.error(err);
-    console.error(err.message);
-
-    if (err.response) {
-        console.error(err.response.data);
+    if (result.type === 'image') {
+      const media = result.images.slice(0, 10).map((url, i) => ({
+        type: 'photo',
+        media: url,
+        caption: i === 0 ? caption : undefined,
+        parse_mode: 'Markdown',
+      }));
+      await bot.sendMediaGroup(chatId, media);
+    } else {
+      await bot.sendVideo(chatId, result.videoUrl, {
+        caption,
+        supports_streaming: true,
+        parse_mode: 'Markdown',
+      });
     }
+  } catch (err) {
+    console.error(err.response?.data || err.message);
 
     bot.editMessageText(
         '❌ Gagal download. Pastikan link valid dan coba lagi.',
@@ -58,6 +56,6 @@ async (msg, match) => {
         chat_id: chatId,
         message_id: status.message_id
         }
-    );
-}
+    ).catch(() => {});
+  }
 });
