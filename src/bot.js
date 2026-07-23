@@ -40,12 +40,16 @@ async (msg, match) => {
         parse_mode: 'Markdown',
       }));
       await bot.sendMediaGroup(chatId, media);
-    } else {
+    } else if (result.type === 'video' && result.videoUrl) {
       await bot.sendVideo(chatId, result.videoUrl, {
         caption,
         supports_streaming: true,
         parse_mode: 'Markdown',
       });
+    } else {
+      await bot.sendMessage(chatId,
+        '❌ Postingan ini hanya berisi audio dan tidak dapat dikirim.',
+      );
     }
   } catch (err) {
     console.error(err.response?.data || err.message);
